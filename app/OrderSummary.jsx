@@ -1,20 +1,42 @@
 'use client'
 import React, { useState } from 'react'
+import Link from  'next/link'
 
 
 const OrderSummary = () => {
+   // Generate an array of time slots starting from 10 am with 1-hour intervals
+   const timeSlots = Array.from({ length: 12 }, (_, index) => {
+    const startHour = (index + 10) % 12 || 12;
+    const endHour = (index + 11) % 12 || 12;
+  
+    return {
+      label: `${startHour}-${endHour} ${index <= (index + 10) % 12? 'PM' : 'AM'}`,
+      value: index + 10,
+    };
+  });
     let [isvisible,setvisible]=useState(false)
     let [selectedSlot, setSelectedSlot] = useState(false);
+    const [selectedLanguage, setSelectedLanguage] = useState('');
+
+    const handleLanguageChange = (event) => {
+      setSelectedLanguage(event.target.value);
+    };
+  
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      // Handle form submission or other actions with the selectedLanguage value
+      console.log('Selected Language:', selectedLanguage);
+    };
 
     const allTimeSlots = [
-      { date: '2022-04-01', time: '9:00 AM - 10:00 AM' },
-      { date: '2022-04-01', time: '11:00 AM - 12:00 PM' },
-      { date: '2022-04-01', time: '2:00 PM - 3:00 PM' },
-      { date: '2022-04-01', time: '5:00 PM - 6:00 PM' },
-      { date: '2022-04-02', time: '9:00 AM - 10:00 AM' },
-      { date: '2022-04-02', time: '11:00 AM - 12:00 PM' },
-      { date: '2022-04-02', time: '2:00 PM - 3:00 PM' },
-      { date: '2022-04-02', time: '5:00 PM - 6:00 PM' },
+      { date: 'Today', time: '9:00 AM - 10:00 AM' },
+      { date: 'Tomorrow', time: '11:00 AM - 12:00 PM' },
+      { date: '2024-01-01', time: '2:00 PM - 3:00 PM' },
+      { date: '2024-01-02', time: '5:00 PM - 6:00 PM' },
+      // { date: '2024-01-03', time: '9:00 AM - 10:00 AM' },
+      // { date: '2024-01-04', time: '11:00 AM - 12:00 PM' },
+      // { date: '2024-01-05', time: '2:00 PM - 3:00 PM' },
+      // { date: '2024-01-06', time: '5:00 PM - 6:00 PM' },
     ];
   
     const morningSlots = allTimeSlots.filter((slot) => slot.time.includes('AM'));
@@ -23,12 +45,12 @@ const OrderSummary = () => {
   
  
   return (
-    <div className='bg-slate-300 h-screen flex justify-evenly p-11'>
-      <div className='bg-white rounded-sm w-[50vw] h-[56vh] '>
+    <div className='bg-slate-300 h-screen flex justify-evenly p-11 '>
+      <div className='bg-white rounded-sm w-[54%] h-[65%] '>
         <h1 className='m-5 text-xl font-semibold'>Select a delivery option</h1>
-        <div className='border-gray-100 rounded-md border-2 h-[45vh] w-[48vw]  m-4'>
+        <div className='border-gray-100 rounded-md border-2 h-[80%] w-[95%]  m-4'>
         <div className='flex p-5 ml-5 mt-10'>
-          <div className='w-[3vw] h-[8vh] rounded-md border-gray-200 border-2 mr-3'><img src='https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.tradeindia.com%2Fproducts%2Fblack-apsara-pencils-box-size-4-inches-thickness-3-mm-for-writing-7747452.html&psig=AOvVaw39SJIH-GIIbzOSTBcfIlFh&ust=1706609476137000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCJC_pu6tgoQDFQAAAAAdAAAAABAE'></img></div>
+          <div className='w-[3vw] h-[8vh] rounded-md border-gray-200 border-2 mr-3'><img src='https://www.bigbasket.com/media/uploads/p/s/10000097_19-fresho-coriander-leaves.jpg?tr=w-256,q=80'className='h-[7vh] w-[3vw]'></img></div>
           <div className='w-[3vw] h-[8vh] rounded-md border-gray-200 border-dotted border-2'><p className='text-center'>View 1 item</p></div>
         </div>
         <div className='w-[43vw] h-[10vh] rounded-md border-gray-300 border-2 mr-10 ml-10 flex'>
@@ -44,37 +66,71 @@ const OrderSummary = () => {
         </div>
         <button className='bg-red-600 rounded-md w-[14vw] h-[6vh] text-white text-center ml-[31.5vw] mt-9 text-xl '>Proceed to payment</button>
         </div>
-        <div className={`fixed inset-0 ${selectedSlot ? 'flex' : 'hidden'} items-center justify-center bg-black bg-opacity-50`}>
-      <div className="bg-white p-8 rounded-lg shadow-lg">
+        <div className={`fixed inset-0 ${selectedSlot ? 'flex' : 'hidden'} items-center justify-center bg-black bg-opacity-50 rounded-md`}>
+      <div className="bg-white p-8 rounded-lg shadow-lg  h-[75vh]">
+        <div className='flex justify-between'>
         <h2 className="text-2xl font-bold mb-4">Select a Delivery Slot</h2>
+        <button
+            className="bg-blue-500 mb-5 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
+            onClick={()=>{
+              setSelectedSlot(false)
+              //hiding that component
+
+
+            }}
+          >X
+          </button>
+          </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {allTimeSlots.map((slot, index) => (
-            <div
+            <button
               key={index}
-              className={`p-4 border rounded cursor-pointer ${
-                selectedSlot === slot ? 'bg-blue-500 text-white' : 'bg-gray-200'
+              className={`p-4 border w-[200px] h-[50px] rounded-md cursor-pointer ${
+                selectedSlot === slot ? 'bg-blue-500 text-white' : 'bg-gray-100'
               }`}
               onClick={() => handleSlotSelect(slot)}
             >
               <p className="font-semibold">{slot.date}</p>
-              <p>{slot.time}</p>
-            </div>
+              
+             
+            </button>
           ))}
+          
         </div>
-        {selectedSlot && (
+        <hr className='mt-10'></hr>
+        <div className='flex w-[100%] gap-10 mt-3'> 
+          <Link href='' className='text-xl text-gray-400 hover:text-black  hover: font-semibold  hover:underline' >All Slots</Link>
+          <Link href='' className='text-xl text-gray-400 hover:text-black  hover: font-semibold  hover:underline'>Morning</Link>
+          <Link href='' className='text-xl text-gray-400 hover:text-black  hover: font-semibold  hover:underline'>Afternoon</Link>
+          <Link href='' className='text-xl text-gray-400 hover:text-black  hover: font-semibold hover:underline'>Evening</Link>
+        </div>
+        <hr className='m-5'></hr>
+        <div className="flex  flex-wrap w-[50vw]">
+      {timeSlots.slice(0,8).map((timeSlot,i) => (
+        <div key={timeSlot.value} className="flex items-center rounded-md border-2 border-gray-300 w-[20vw] h-[50px] m-3 text-center
+         hover:text-[rgba(71,111,0)] hover:border-[rgba(71,111,0)]">
+          <input
+            type="radio"
+            id={`time-${timeSlot.value}`}
+            name="timing"
+            value={timeSlot.value}
+            className="form-radio m-7 h-7 w-7 text-gray-500 hover:text-[rgba(71,111,0)]"
+          />
+          <label htmlFor={`time-${timeSlot.value}`}>
+            {timeSlot.label}
+          </label>
+        </div>
+      ))}
+    </div>
+
+        
+        {/* {selectedSlot && (
           <div className="mt-4">
             <p className="font-semibold">Selected Slot:</p>
             <p>{`${selectedSlot.date} - ${selectedSlot.time}`}</p>
           </div>
-        )}
-        <div className="mt-4 flex justify-end">
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
-            onClick={selectedSlot=false}
-          >
-            Close
-          </button>
-        </div>
+        )} */}
+       
       </div>
     </div>
        
