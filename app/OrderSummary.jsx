@@ -17,6 +17,7 @@ const OrderSummary = () => {
     let [isvisible,setvisible]=useState(false)
     let [selectedSlot, setSelectedSlot] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState('');
+    let [viewitems,setviewitems]=useState(false)
 
     const handleLanguageChange = (event) => {
       setSelectedLanguage(event.target.value);
@@ -51,8 +52,52 @@ const OrderSummary = () => {
         <div className='border-gray-100 rounded-md border-2 h-[80%] w-[95%]  m-4'>
         <div className='flex p-5 ml-5 mt-10'>
           <div className='w-[3vw] h-[8vh] rounded-md border-gray-200 border-2 mr-3'><img src='https://www.bigbasket.com/media/uploads/p/s/10000097_19-fresho-coriander-leaves.jpg?tr=w-256,q=80'className='h-[7vh] w-[3vw]'></img></div>
-          <div className='w-[3vw] h-[8vh] rounded-md border-gray-200 border-dotted border-2'><p className='text-center'>View 1 item</p></div>
+          <button onClick={()=>{
+            setviewitems(true)
+          }} className='w-[3vw] h-[8vh] rounded-md border-gray-200 border-dotted border-2'><p className='text-center'>View 1 item</p>
+          </button>
         </div>
+        <div className={`fixed inset-0 ${viewitems ? 'flex' : 'hidden'} items-center justify-center rounded-md bg-black bg-opacity-50`}>
+      <div className="bg-white  rounded-lg shadow-lg  h-[75vh]">
+        <div className='flex justify-between bg-gray-100 rounded-t-md m-0 h-20'>
+        <h2 className="text-2xl font-bold mb-4">Shipment 1| {} items</h2>
+        <button
+            className="bg-blue-500 mb-5 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none h-12"
+            onClick={()=>{
+              setviewitems(false)
+              //hiding that component
+
+
+            }}
+          >X
+          </button>
+          </div>
+        <div className=" gap-4 m-10">
+          {allTimeSlots.map((slot, index) => (
+            <div
+              key={index}
+              className='p-4  w-[400px] h-auto cursor-pointer flex-wrap bg-white flex justify-evenly'
+              onClick={() => handleSlotSelect(slot)}
+            >
+              <img src='https://www.bigbasket.com/media/uploads/p/s/10000097_19-fresho-coriander-leaves.jpg?tr=w-256,q=80'className='h-[7vh] w-[3vw]'></img>
+              <p className="font-semibold">item name</p>
+              <svg className='w-6 h-7' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h
+              48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.
+              
+              4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm8
+              0 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16
+              -16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"/></svg>
+              <button className='border rounded-md h-[3rem] w-[8rem] '>Save For Later</button>
+
+              
+             
+            </div>
+          ))}
+          
+        </div>
+        </div>
+        </div>
+
         <div className='w-[43vw] h-[10vh] rounded-md border-gray-300 border-2 mr-10 ml-10 flex'>
           <h3 className='text-center m-8'>Delivery Slot</h3>
           <div className='h-[9.8vh] bg-black w-[1px]'></div>
